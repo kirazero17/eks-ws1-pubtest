@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.125.7">
+    <meta name="description" content="">
+<meta name="author" content="journeyoftheaverageguy@gmail.com">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Docker and ContainerD :: Kubernetes - EKS Workshop</title>
+
+    
+    <link href="/css/nucleus.css?1725875113" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1725875113" rel="stylesheet">
+    <link href="/css/hybrid.css?1725875113" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1725875113" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1725875113" rel="stylesheet">
+    <link href="/css/auto-complete.css?1725875113" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1725875113" rel="stylesheet">
+    <link href="/css/theme.css?1725875113" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1725875113" rel="stylesheet">
+    
+    <link href="/css/theme-workshop.css?1725875113" rel="stylesheet">
+    
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1725875113"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/1-introduce/1.2--docker-vs.-containerd/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg>
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1725875113"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1725875113"></script>
+<script type="text/javascript">
+    
+        var baseurl = "\/\/localhost:1313\/";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1725875113"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/" title="Introduction" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/1-introduce/">
+          <b> 1. </b>Introduction
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/1.1-cluster/" title="Cluster Architechture" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduce/1.1-cluster/">
+          <b> 1.1 </b>Cluster Architechture
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/1.1-cluster/1.1.1-node/" title="Nodes" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduce/1.1-cluster/1.1.1-node/">
+          <b> 1.1.1 </b>Nodes
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/1.1-cluster/1.1.2-communitcation/" title="Nodes - Control Plane communication" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduce/1.1-cluster/1.1.2-communitcation/">
+          <b> 1.1.2 </b>Nodes - Control Plane communication
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/1.1-cluster/1.1.3-controllers/" title="Controllers" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduce/1.1-cluster/1.1.3-controllers/">
+          <b> 1.1.3 </b>Controllers
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/1.2--docker-vs.-containerd/" title="Docker and ContainerD" class="dd-item 
+        
+        active
+        
+        ">
+      <a href="/1-introduce/1.2--docker-vs.-containerd/">
+          <b> 1.2 </b>Docker and ContainerD
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/1.3-etcd/" title="ETCD" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduce/1.3-etcd/">
+          <b> 1.3 </b>ETCD
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/1.4-kube-api-server/" title="Kube API Server" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduce/1.4-kube-api-server/">
+          <b> 1.4 </b>Kube API Server
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/1.5-kube-controller-manager/" title="Kube Controller Manager" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduce/1.5-kube-controller-manager/">
+          <b> 1.5 </b>Kube Controller Manager
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/1.6-kube-scheduler/" title="Kube Scheduler" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduce/1.6-kube-scheduler/">
+          <b> 1.6 </b>Kube Scheduler
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/1.7-kubelet/" title="Kubelet" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduce/1.7-kubelet/">
+          <b> 1.7 </b>Kubelet
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/1.8-kube-proxy/" title="kube-proxy" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduce/1.8-kube-proxy/">
+          <b> 1.8 </b>kube-proxy
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/1.9-pods/" title="Pods" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduce/1.9-pods/">
+          <b> 1.9 </b>Pods
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-prerequiste/" title="Prerequiste" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-prerequiste/">
+          <b> 2. </b>Prerequiste
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-prerequiste/2.1-prepare-environment/" title="Environment Preperation" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-prerequiste/2.1-prepare-environment/">
+          <b> 2.1 </b>Environment Preperation
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-prerequiste/2.1-prepare-environment/2.1.1-cloud9/" title="Deploy Cloud9 Lab Environment (Deprecated - Not recommended)" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-prerequiste/2.1-prepare-environment/2.1.1-cloud9/">
+          <b> 2.1.1 </b>Deploy Cloud9 Lab Environment (Deprecated - Not recommended)
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-prerequiste/2.1-prepare-environment/2.1.2-cloud-ide/" title="Deploy VSCode as a web app with EC2 and CloudFront" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-prerequiste/2.1-prepare-environment/2.1.2-cloud-ide/">
+          <b> 2.1.2 </b>Deploy VSCode as a web app with EC2 and CloudFront
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-prerequiste/2.1-prepare-environment/2.1.3-remote-vscode/" title="Deploying VSCode on EC2 and access it from your local VSCode" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-prerequiste/2.1-prepare-environment/2.1.3-remote-vscode/">
+          <b> 2.1.3 </b>Deploying VSCode on EC2 and access it from your local VSCode
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-prerequiste/2.2-cluster-creation/" title="Creating your Kubernetes Cluster" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-prerequiste/2.2-cluster-creation/">
+          <b> 2.2 </b>Creating your Kubernetes Cluster
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-prerequiste/2.2-cluster-creation/2.2.1-eksctl/" title="Using eksctl" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-prerequiste/2.2-cluster-creation/2.2.1-eksctl/">
+          <b> 2.2.1 </b>Using eksctl
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-prerequiste/2.2-cluster-creation/2.2.2-terraform/" title="Using Terraform" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-prerequiste/2.2-cluster-creation/2.2.2-terraform/">
+          <b> 2.2.2 </b>Using Terraform
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-prerequiste/2.3-structure/" title="Workshop Structure" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-prerequiste/2.3-structure/">
+          <b> 2.3 </b>Workshop Structure
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-getting-started/" title="Getting Started" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/3-getting-started/">
+          <b> 3. </b>Getting Started
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-getting-started/1-sample-application/" title="Sample Aplication" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/3-getting-started/1-sample-application/">
+          <b> 3.1 </b>Sample Aplication
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-getting-started/2-lab-components/" title="Lab Components" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/3-getting-started/2-lab-components/">
+          <b> 3.2 </b>Lab Components
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-getting-started/3-deploying-our-first-component/" title="Deploy our first component" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/3-getting-started/3-deploying-our-first-component/">
+          <b> 3.3 </b>Deploy our first component
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-getting-started/4-microservices-on-kubernetes/" title="Microservices on Kubernetes" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/3-getting-started/4-microservices-on-kubernetes/">
+          <b> 3.4 </b>Microservices on Kubernetes
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-getting-started/5-other-components/" title="Other Components" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/3-getting-started/5-other-components/">
+          <b> 3.5 </b>Other Components
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-kustomize/" title="Kustomize" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/4-kustomize/">
+          <b> 4. </b>Kustomize
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/5-helm/" title="Helm" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/5-helm/">
+          <b> 5. </b>Helm
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/6-cleanup/" title="Cleanup" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/6-cleanup/">
+          <b> 6. </b>Cleanup
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="https://aws.amazon.com/blogs"><i class='fab fa-aws'></i> AWS Study Group - Blog</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="https://www.facebook.com/groups/awsstudygroupfcj"><i class='fab fa-facebook'></i> AWS Study Group - FB Group</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="//localhost:1313/1-introduce/1.2--docker-vs.-containerd/" selected>English</option>
+                    
+                  
+              
+                  
+              
+          
+              
+              
+                  
+              
+                  
+                    
+                    
+                      <option id="vi" value="//localhost:1313/vi/1-introduce/1.2--docker-vs.-containerd/">Tiếng Việt</option>
+                    
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <left>
+    
+     <b> Workshop</b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=11626245&style=0038&nbdigits=9&type=page&initCount=0" title="Migrate" Alt="web counter"   border="0" /></a>  <br>
+     <b> <a href="https://cloudjourney.awsstudygroup.com/">Cloud Journey</a></b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830807&style=0038&nbdigits=9&type=page&initCount=0" title="Total CLoud Journey" Alt="web counter"   border="0"   />
+     
+</left>
+<left>
+    <br>
+    <br>
+        <b> Last Updated </b> <br>
+        <i><font color=orange>26-02-2024</font></i>
+    </left>
+    <left>
+        <br>
+        <br>
+            <b> Team </b> <br>
+            <i> <a href="https://www.linkedin.com/in/jotaguy"  style="color:orange">Gia Hưng </a> <br>
+        </i>
+        </left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/'>Kubernetes on AWS</a> > <a href='/1-introduce/'>Introduction</a> > Docker and ContainerD
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Docker and ContainerD
+            </h1>
+          
+
+        
+
+
+
+	<p>In this section we will look at the differences between Docker and ContainerD</p>
+<p>So you’re going to come across Docker and <code>containerd</code> many times. Going forward, when you read older blogs or documentation pages , you’ll see Docker mentioned along with Kubernetes and when you read newer blogs you’ll see <code>containerd</code> and you’ll wonder what the difference is between the two. And there are a few CLI tools like <code>ctr</code>, <code>crictl</code> or <code>nerdctl</code> and you’ll wonder what are these CLI tools and which one should you be using, so that’s what I’m going to explain.
+Let’s go back in time to the beginning of the container era. In the beginning, there was just Docker. There were a few other tools like Rocket (<a href="https://www.redhat.com/en/topics/containers/what-is-rkt">rkt</a>), but Docker’s user experience made working with containers super simple and hence Docker became the most dominant container tool. And then came Kubernetes to orchestrate Docker so Kubernetes was built to orchestrate Docker specifically in the beginning so Docker and Kubernetes were tightly coupled and back then Kubernetes only worked with Docker and didn&rsquo;t support any other container solutions.</p>
+<p>And then Kubernetes grew in popularity as a container orchestrator and now other container runtimes like <code>rkt</code> wanted in so Kubernetes users needed it to work with container runtimes that are other than just Docker, and so Kubernetes introduced an interface called container runtime interface or CRI, so CRI allowed any vendor to work as a container runtime for Kubernetes as long as they adhere to the OCI standards.
+So OCI stands for Open Container Initiative and it consists of an image spec and a runtime spec. Image spec means the specifications on how an image should be built. It defines the specifications on how an image should be built and the runtime spec defines the standards on how any container runtime should be developed so keeping these standards in mind, anyone can build a container runtime that can be used by anybody to work with Kubernetes, so that was the idea.</p>
+<p><img alt="Docker and Containerd" src="../../images/part1/2/0003.png?featherlight=false&width=60pc"></p>
+<p>So <code>rkt</code> and other container runtimes that adhere to the OCI standards were now supported as container runtimes for Kubernetes via the CRI, however Docker wasn’t built to support  the CRI standards, remember Docker was built way before CRI was introduced and Docker still was the dominant container tool used by most, so Kubernetes had to continue to support Docker as well and so Kubernetes introduced what is known as <code>dockershim</code> which was a hacky but temporary way to support Docker outside of the CRI.</p>
+<p>So while most other container runtimes worked to the CRI, Docker continued to work without it, so now you see Docker isn’t just a container runtime alone. Docker consists of multiple tools that are put together, for example the Docker CLI, the Docker API, the build tools that help in building images. There was support for volumes, security, and finally the container runtime called <code>runc</code>, and the daemon that managed <code>runc</code>, that was called <code>containerd</code>. So containerd is CRI compatible and can work directly with Kubernetes as all other runtimes, so containerd can be used as a runtime on its own separate from Docker.</p>
+<p>Now you have containerd as a separate runtime and Docker separately, Kubernetes continued to maintain support for Docker engine directly. However, having to maintain the <code>dockershim</code> was an unnecessary effort and added complications. As a result, it was decided in v1.24 release of Kubernetes to remove <code>dockershim</code> completely and so support for Docker was removed. However, for all the images that were built before Docker was removed, all the Docker images continued to work because Docker followed the image spec from the OCI standards so all the images built by Docker follow the standard so they continued to work with containerd but Docker itself was removed as a supported runtime from Kubernetes. So that’s kind of the whole story, now let’s look into containerd more specifically.</p>
+<p>So containerd, though a part of Docker, is a separate project on its own now and is a member of <a href="https://www.cncf.io/">CNCF</a> with the <a href="https://www.cncf.io/projects/">graduated</a> status. For that reason, you can now install containerd on its own without having to install Docker itself so if you don’t really need Docker’s other features you could ideally just install containerd alone. Typically, we ran containers using the <code>docker run</code> command when we had Docker and if Docker isn’t installed then how do you run containers with just containerd? Now, once you install containerd it comes with a command line tool called <a href="https://github.com/projectatomic/containerd/blob/master/docs/cli.md#client-cli">ctr</a>, and this tool is solely made for debugging containerd and is not very user friendly as it only supports a limited set of features and this is all you can see in the documentation pages for this particular tool. So for the other than limited set of features that require any other way you want to interact with containerd you have to rely on making API calls directly which is not the most user friendly way for us to operate.</p>
+<p>So just to give you an idea, the <code>ctr</code> command can be used to perform basic container-related activities such as pull images, for example to pull redis image you would run</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ctr images pull docker.io/library/redis:alpine
+</span></span></code></pre></div><p>To run a container we use the <code>ctr</code> run command</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ctr run docker.io/library/redis:alpine redis
+</span></span></code></pre></div><p>But as I mentioned, this tool is solely for debugging containerd and is not very user friendly and is not to be used for managing containers on a production environment.
+So a better alternative recommended is the <a href="https://github.com/containerd/nerdctl#nerdctl-docker-compatible-cli-for-container">nerdctl</a> tool. So the <code>nerdctl</code> tool is a command line tool that’s very similar to Docker, so it’s a Docker-like CLI for containerd. It supports most of the CLI options that Docker supports and apart from that it has the added benefit that it can give us access to the newest features implemented in containerd, so for example we can work with encrypted container images or other new features that will eventually be implemented into the regular Docker command in the future. It also supports lazy pulling of images, P2P image distribution, image signing and verifying and namespaces in Kubernetes which are not available in Docker. So the <code>nerdctl</code> tool works very similar to Docker cli, so instead of Docker you would simply have to replace it with <code>nerdctl</code> so it can run almost all Docker commands that interact with containers like this</p>
+<p>So that’s pretty easy and straightforward so now that we have talked about <code>ctr</code> and the <code>nerdctl</code> tool, it’s important to talk about another command like tool known as <a href="https://github.com/kubernetes-sigs/cri-tools/blob/master/docs/crictl.md#container-runtime-interface-cri-cli">crictl</a>. So earlier we talked about the CRI which is a single interface used to connect CRI compatible container runtimes, containerd, <code>rkt</code> and others. So the <code>crictl</code> is a command line utility that is used to interact with the CRI compatible container runtime, so this is kind of interaction from the Kubernetes perspective. So this tool is developed and maintained by the Kubernetes community and this tool works across all the different container runtimes and because earlier you had the <code>ctr</code> and <code>nerdctl</code> utility that was built by the containerd community specifically for containerd, but this particular tool is from the Kubernetes perspective that works across different container runtimes.</p>
+<p>So it must be installed separately and is used to inspect and debug container runtimes so this again is not ideally used to create containers unlike the Docker or the <code>nerdctl</code> utility but is again a debugging tool. You can technically create containers with the <code>crictl</code> utility but it’s not easy. It’s only to be used for some special debugging purposes. And remember that it kind of works along with the kubelet so we know that the kubelet is responsible for ensuring that a specific number of containers or pods are available on a node at time, so if you kind of go through the <code>crictl</code> utility and try and create containers with it, then eventually kubelet is going to delete them because kubelet is unaware of some of those containers or pods that are created outside of its knowledge so anything that it sees it’s going to go and delete it, so because of those things remember that the <code>crictl</code> utility is only used for debugging purposes and getting into containers and all of that.</p>
+<p>So let’s look at some of the command line examples so you simply run  the <code>crictl</code> command for this and this can be used to perform basic container-related activities such as pull images, or list existing images, list containers, very similar to the Docker command where you use the PS commands, so in Docker you run the <code>ps</code> command, and here you run the <code>crictl ps</code> command and to run a command in since a container docker remember we use the <code>exec</code> command and it’s the same here and along with the same options such as <code>-i</code> and <code>-t</code> and you specify the container id. The view the logs, you use the <code>crictl</code> logs command, again very similar to the docker command.</p>
+<p>One major difference is that the <code>crictl</code> command is also aware of pods so you can list pods by running the <code>crictl</code> pods command so this wasn’t something that Docker was aware of. So while working with Kubernetes in the past, we used Docker commands a lot to troubleshoot containers and view logs especially on the worker nodes and now you’re going to use the <code>crictl</code> command to do so. So the syntax is a lot similar and so it shouldn’t be really hard.
+So here’s a chart that lists the comparison between the Docker and <code>crictl</code> command line tools. So as you can see, a lot of command such as attach exec, images, info, inspect, logs, ps, stats, version etc., work exactly the same way, and some of the commands to create, remove and start and stop images work similarly too. So a full list of differences can be found in <a href="https://kubernetes.io/docs/reference/tools/map-crictl-dockercli/#retrieve-debugging-information">this link</a>.</p>
+<table>
+<thead>
+<tr>
+<th>docker cli</th>
+<th>crictl</th>
+<th>Description</th>
+<th>Unsupported Features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>attach</td>
+<td>attach</td>
+<td>Attach to a running container</td>
+<td>&ndash;detach-keys, &ndash;sig-proxy</td>
+</tr>
+<tr>
+<td>exec</td>
+<td>exec</td>
+<td>Run a command in a running container</td>
+<td>&ndash;privileged, &ndash;user, &ndash;detach-keys</td>
+</tr>
+<tr>
+<td>images</td>
+<td>images</td>
+<td>List images</td>
+<td></td>
+</tr>
+<tr>
+<td>info</td>
+<td>info</td>
+<td>Display system-wide information</td>
+<td></td>
+</tr>
+<tr>
+<td>inspect</td>
+<td>inspect, inspecti</td>
+<td>Return low-level information on a container, image or task</td>
+<td></td>
+</tr>
+<tr>
+<td>logs</td>
+<td>logs</td>
+<td>Fetch the logs of a container</td>
+<td>&ndash;details</td>
+</tr>
+<tr>
+<td>ps</td>
+<td>ps</td>
+<td>List containers</td>
+<td></td>
+</tr>
+<tr>
+<td>stats</td>
+<td>stats</td>
+<td>Display a live stream of container(s) resource usage statistics</td>
+<td>Column: NET/BLOCK I/O, PIDs</td>
+</tr>
+<tr>
+<td>version</td>
+<td>version</td>
+<td>Show the runtime (Docker, ContainerD, or others) version information</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>So, since as I mentioned, <code>crictl</code> can be used to connect to any CRI compatible runtime, remember to set the right endpoint if you have multiple container runtimes configured, or if you want <code>crictl</code> to interact with a specific runtime, for example if you haven’t configured anything by default it’s going to connect to these sockets in this particular order, so it’s going to try and connect to <code>dockershim</code> first, then containerd, then CRI-O, then the CRI-dockerd – that’s kind of the order that it falls. But if you want to override that and set a specific endpoint, you use the <code>--runtime-endpoint</code> option with the <code>crictl</code> command line, or you could use the <code>CONTAINER_RUNTIME_ENDPOINT</code> environment variable. Set the environment variable to the right endpoint.</p>
+<p>To summarize, we have the <code>ctr</code> command line utility that comes with containerd and works with containerd which is used for debugging purposes only and has a very limited set of features. Ideally you wouldn’t be using this at all so you can kind of ignore this. Then we have the <code>nerdctl</code> CLI, which is again from the containerd community. Yet, this is a Docker-like CLI for containerd used for general purpose to create containers and supports the same or more features than Docker CLI. Therefore, it’s something that we think we all will be using a lot more going forward. Then we have the <code>crictl</code> utility which is from the Kubernetes community and mainly used to interact with CRI compatible runtimes, so it’s not just for containerd – this can be used for all CRI supported runtimes – again this is mainly to be used for debugging purposes.</p>
+<p>So if we look at the comparisons here, you can see that <code>ctr</code> and <code>crictl</code> are used mainly for debugging purposes, whereas the <code>nerdctl</code> is used for general purpose. The <code>ctr</code> and <code>nerdctl</code> are from the containerd community and work with containerd, whereas <code>crictl</code> is from the Kubernetes community and works across all CRI compatible runtimes.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/1-introduce/1.1-cluster/1.1.3-controllers/" title="Controllers"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/1-introduce/1.3-etcd/" title="ETCD" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1725875113"></script>
+    <script src="/js/perfect-scrollbar.min.js?1725875113"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1725875113"></script>
+    <script src="/js/jquery.sticky.js?1725875113"></script>
+    <script src="/js/featherlight.min.js?1725875113"></script>
+    <script src="/js/highlight.pack.js?1725875113"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1725875113"></script>
+    <script src="/js/learn.js?1725875113"></script>
+    <script src="/js/hugo-learn.js?1725875113"></script>
+
+    <link href="/mermaid/mermaid.css?1725875113" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1725875113"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-158079754-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>
